@@ -1,0 +1,15 @@
+{
+	"admin/services/antiblock": {
+		"title": "Antiblock",
+		"order": 90,
+		"action": {
+			"type": "view",
+			"path": "antiblock/antiblock"
+		},
+		"depends": {
+			"acl": [
+				"luci-app-antiblock"
+			]
+		}
+	}
+}

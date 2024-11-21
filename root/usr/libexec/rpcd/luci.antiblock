@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# ubus -v list luci.antiblock
+# ubus -S call luci.antiblock start
+
+. /lib/functions.sh
+. /usr/share/libubox/jshn.sh
+
+start() {
+    json_init
+    json_add_string "data" "$(cat /root/my_urls.txt)"
+    json_dump
+    json_cleanup
+}
+
+case "$1" in
+list)
+    json_init
+    json_add_object "start"
+    json_close_object
+    json_dump
+    json_cleanup
+    ;;
+call)
+    case "$2" in
+    start)
+        start
+        ;;
+    esac
+    ;;
+esac
