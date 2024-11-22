@@ -3,9 +3,15 @@
 'require rpc';
 'require view';
 
-var load_sample1 = rpc.declare({
+var read_urls = rpc.declare({
     object: 'luci.antiblock',
-    method: 'start'
+    method: 'read_urls'
+});
+
+var write_urls = rpc.declare({
+    object: 'luci.antiblock',
+    method: 'write_urls',
+    params: ["urls"]
 });
 
 return view.extend({
@@ -16,18 +22,30 @@ return view.extend({
     },
     load: function () {
         return Promise.all([
-            load_sample1()
+            read_urls()
         ]);
     },
     render: function (data) {
-        console.log(data[0].data);
-
         let newDiv = document.createElement("div");
 
         let newTextarea = document.createElement("textarea");
-        newTextarea.value = data[0].data;
+        newTextarea.value = data[0].urls;
 
         newDiv.appendChild(newTextarea);
+
+        let btn_action = E(
+            "button",
+            {
+                class: "btn cbi-button cbi-button-apply",
+                click: function (ev) {
+                    console.log(newTextarea.value);
+                    write_urls(newTextarea.value);
+                },
+            },
+            _("Write URLs")
+        );
+
+        newDiv.appendChild(btn_action);
 
         return newDiv;
     },
