@@ -26,28 +26,39 @@ return view.extend({
         ]);
     },
     render: function (data) {
-        let newDiv = document.createElement("div");
+        let main_div = E(
+            "div",
+            {
+                class: "cbi-section",
+            }
+        );
 
-        let newTextarea = document.createElement("textarea");
-        newTextarea.value = data[0].urls;
+        let urls_textarea = E(
+            "textarea",
+            {
+                class: "cbi-input-textarea",
+            }
+        );
 
-        newDiv.appendChild(newTextarea);
+        urls_textarea.value = data[0].urls;
+
+        main_div.appendChild(urls_textarea);
 
         let btn_action = E(
             "button",
             {
                 class: "btn cbi-button cbi-button-apply",
                 click: function (ev) {
-                    console.log(newTextarea.value);
-                    write_urls(newTextarea.value);
+                    console.log(urls_textarea.value);
+                    write_urls(urls_textarea.value);
                 },
             },
             _("Write URLs")
         );
 
-        newDiv.appendChild(btn_action);
+        main_div.appendChild(btn_action);
 
-        return newDiv;
+        return main_div;
     },
     handleSave: null,
     handleSaveApply: null,
