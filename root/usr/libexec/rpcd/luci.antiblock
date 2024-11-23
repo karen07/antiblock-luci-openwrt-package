@@ -22,6 +22,10 @@ write_urls() {
     json_cleanup
 }
 
+restart() {
+    /etc/init.d/antiblock restart
+}
+
 case "$1" in
 list)
     json_init
@@ -29,6 +33,8 @@ list)
     json_close_object
     json_add_object "write_urls"
     json_add_string 'urls' "urls"
+    json_close_object
+    json_add_object "restart"
     json_close_object
     json_dump
     json_cleanup
@@ -44,6 +50,9 @@ call)
         json_get_var urls "urls"
         json_cleanup
         write_urls "$urls"
+        ;;
+    restart)
+        restart
         ;;
     esac
     ;;

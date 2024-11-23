@@ -5,7 +5,8 @@
 			"ubus": {
 				"luci.antiblock": [
 					"read_urls",
-					"write_urls"
+					"write_urls",
+					"restart"
 				]
 			},
 			"uci": [

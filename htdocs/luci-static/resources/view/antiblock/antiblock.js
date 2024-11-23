@@ -8,6 +8,11 @@ var read_urls = rpc.declare({
     method: 'read_urls'
 });
 
+var restart = rpc.declare({
+    object: 'luci.antiblock',
+    method: 'restart'
+});
+
 var write_urls = rpc.declare({
     object: 'luci.antiblock',
     method: 'write_urls',
@@ -44,19 +49,30 @@ return view.extend({
 
         main_div.appendChild(urls_textarea);
 
-        let btn_action = E(
+        let btn_write_urls = E(
             "button",
             {
                 class: "btn cbi-button cbi-button-apply",
                 click: function (ev) {
-                    console.log(urls_textarea.value);
                     write_urls(urls_textarea.value);
                 },
             },
             _("Write URLs")
         );
 
-        main_div.appendChild(btn_action);
+        let btn_restart = E(
+            "button",
+            {
+                class: "btn cbi-button cbi-button-apply",
+                click: function (ev) {
+                    restart();
+                },
+            },
+            _("Restart")
+        );
+
+        main_div.appendChild(btn_write_urls);
+        main_div.appendChild(btn_restart);
 
         return main_div;
     },
