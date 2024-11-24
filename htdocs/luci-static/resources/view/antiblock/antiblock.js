@@ -1,4 +1,5 @@
 'use strict';
+"require ui";
 'require form';
 'require rpc';
 'require view';
@@ -23,7 +24,7 @@ return view.extend({
     generic_failure: function (message) {
         return E('div', {
             'class': 'error'
-        }, [_('RPC call failure: '), message])
+        }, ['RPC call failure: ', message])
     },
     load: function () {
         return Promise.all([
@@ -54,10 +55,18 @@ return view.extend({
             {
                 class: "btn cbi-button cbi-button-apply",
                 click: function (ev) {
-                    write_urls(urls_textarea.value);
+                    ui.showModal(null, [
+                        E(
+                            "p",
+                            { class: "spinning" },
+                            "Write URLs"
+                        ),
+                    ]);
+                    Promise.all([write_urls(urls_textarea.value)]);
+                    location.reload();
                 },
             },
-            _("Write URLs")
+            "Write URLs"
         );
 
         let btn_restart = E(
@@ -65,10 +74,18 @@ return view.extend({
             {
                 class: "btn cbi-button cbi-button-apply",
                 click: function (ev) {
-                    restart();
+                    ui.showModal(null, [
+                        E(
+                            "p",
+                            { class: "spinning" },
+                            "Restart"
+                        ),
+                    ]);
+                    Promise.all([restart()]);
+                    location.reload();
                 },
             },
-            _("Restart")
+            "Restart"
         );
 
         main_div.appendChild(btn_write_urls);
