@@ -32,25 +32,34 @@ return view.extend({
         ]);
     },
     render: function (data) {
-        let main_div = E(
+        var main_div = E("div");
+
+        var header = E("h2", {}, "Antiblock");
+
+        var section_descr_div = E(
+            "div",
+            {
+                class: "cbi-section-descr",
+            },
+            "Blocked URLs"
+        );
+
+        var section_div = E(
             "div",
             {
                 class: "cbi-section",
             }
         );
 
-        let urls_textarea = E(
+        var urls_textarea = E(
             "textarea",
             {
                 class: "cbi-input-textarea",
-            }
+            },
+            data[0].urls
         );
 
-        urls_textarea.value = data[0].urls;
-
-        main_div.appendChild(urls_textarea);
-
-        let btn_write_urls = E(
+        var btn_write_urls = E(
             "button",
             {
                 class: "btn cbi-button cbi-button-apply",
@@ -69,7 +78,7 @@ return view.extend({
             "Write URLs"
         );
 
-        let btn_restart = E(
+        var btn_restart = E(
             "button",
             {
                 class: "btn cbi-button cbi-button-apply",
@@ -88,8 +97,12 @@ return view.extend({
             "Restart"
         );
 
-        main_div.appendChild(btn_write_urls);
-        main_div.appendChild(btn_restart);
+        main_div.appendChild(header);
+        main_div.appendChild(section_div);
+        section_div.appendChild(section_descr_div);
+        section_div.appendChild(urls_textarea);
+        section_div.appendChild(btn_write_urls);
+        section_div.appendChild(btn_restart);
 
         return main_div;
     },
