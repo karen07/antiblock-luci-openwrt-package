@@ -2,23 +2,29 @@
 
 # ubus -v list luci.antiblock
 # ubus -S call luci.antiblock read_urls
-# ubus -S call luci.antiblock write_urls '{"urls":"ytimg.com"}'
+# ubus -S call luci.antiblock write_urls '{"urls":["ytimg.com","youtube.com"]}'
 
 . /lib/functions.sh
 . /usr/share/libubox/jshn.sh
 
 read_urls() {
     json_init
-    json_add_string "urls" "$(cat /root/my_urls.txt)"
+    json_add_array "urls"
+    while read url; do
+        json_add_string "" "$url"
+    done </root/my_urls.txt
+    json_close_array
     json_dump
     json_cleanup
 }
 
 write_urls() {
-    echo "$1" >/root/my_urls.txt
-    json_init
-    json_add_string "urls" "$1"
-    json_dump
+    json_load "$1"
+    json_get_values values "urls"
+    >/root/my_urls.txt
+    for key in $values; do
+        echo "$key" >>/root/my_urls.txt
+    done
     json_cleanup
 }
 
@@ -46,10 +52,7 @@ call)
         ;;
     write_urls)
         read -r input
-        json_load "$input"
-        json_get_var urls "urls"
-        json_cleanup
-        write_urls "$urls"
+        write_urls "$input"
         ;;
     restart)
         restart

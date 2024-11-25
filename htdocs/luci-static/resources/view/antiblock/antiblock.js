@@ -56,8 +56,10 @@ return view.extend({
             {
                 class: "cbi-input-textarea",
             },
-            data[0].urls
         );
+
+        urls_textarea.value = "";
+        data[0].urls.forEach((element) => urls_textarea.value += element + "\n");
 
         var btn_write_urls = E(
             "button",
@@ -71,7 +73,11 @@ return view.extend({
                             "Write URLs"
                         ),
                     ]);
-                    Promise.all([write_urls(urls_textarea.value)]);
+                    var lines = urls_textarea.value.replace(/\r\n/g, "\n").split("\n");
+                    var filtered = lines.filter(elm => elm);
+                    var myJsonString = JSON.stringify(filtered);
+                    var myArray = JSON.parse(myJsonString);
+                    Promise.all([write_urls(myArray)]);
                     location.reload();
                 },
             },
