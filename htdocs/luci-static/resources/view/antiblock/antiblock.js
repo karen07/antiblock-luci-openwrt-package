@@ -9,11 +9,6 @@ var read_urls = rpc.declare({
     method: 'read_urls'
 });
 
-var restart = rpc.declare({
-    object: 'luci.antiblock',
-    method: 'restart'
-});
-
 var write_urls = rpc.declare({
     object: 'luci.antiblock',
     method: 'write_urls',
@@ -84,31 +79,11 @@ return view.extend({
             "Write URLs"
         );
 
-        var btn_restart = E(
-            "button",
-            {
-                class: "btn cbi-button cbi-button-apply",
-                click: function (ev) {
-                    ui.showModal(null, [
-                        E(
-                            "p",
-                            { class: "spinning" },
-                            "Restart"
-                        ),
-                    ]);
-                    Promise.all([restart()]);
-                    location.reload();
-                },
-            },
-            "Restart"
-        );
-
         main_div.appendChild(header);
         main_div.appendChild(section_div);
         section_div.appendChild(section_descr_div);
         section_div.appendChild(urls_textarea);
         section_div.appendChild(btn_write_urls);
-        section_div.appendChild(btn_restart);
 
         return main_div;
     },

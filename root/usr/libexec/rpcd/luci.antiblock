@@ -26,9 +26,7 @@ write_urls() {
         echo "$key" >>/root/my_urls.txt
     done
     json_cleanup
-}
 
-restart() {
     /etc/init.d/antiblock restart
 }
 
@@ -39,8 +37,6 @@ list)
     json_close_object
     json_add_object "write_urls"
     json_add_string 'urls' "urls"
-    json_close_object
-    json_add_object "restart"
     json_close_object
     json_dump
     json_cleanup
@@ -53,9 +49,6 @@ call)
     write_urls)
         read -r input
         write_urls "$input"
-        ;;
-    restart)
-        restart
         ;;
     esac
     ;;
